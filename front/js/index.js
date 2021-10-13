@@ -1,9 +1,10 @@
 let api = 'http://localhost:3000/api/products';
+localStorage.setItem("api", api);
 getAPI(api);
 
 async function getAPI(api_link){
     try{
-        
+
         const res = await fetch(api_link)
         if (res.ok) {
             
