@@ -1,37 +1,53 @@
-async function getAPI(api_link){
+let api = 'http://localhost:3000/api/products';
+let url = window.location.href;
+let search_params = new URLSearchParams(url);
+let id;
+if(search_params.has('id')) {
+    id = search_params.get('id');
+    console.log(id);
+} else{
+    id = null;
+    console.log("null");
+}
+id = "107fb5b75607497b96722bda5b504926";
+getProduct(api, id);
+
+async function getProduct(api, id){
+
     try{
-        const res = await fetch(api_link)
+
+        const res = await fetch(api + '/' + id);
+
         if (res.ok) {
             
-            const datas = await res.json();
-            console.log(datas);
-            let cards_api = document.getElementById('items');
-            for (let data of datas){
-                let card = document.createElement("div");
-                cards_api.appendChild(card);
-                card.innerHTML = 
-                '<a href="./product.html?id=42">'+
-                '<article>'+
-                  '<img src=".../product01.jpg" alt="Lorem ipsum dolor sit amet, Kanap name1">'+
-                  '<h3 class="productName">Kanap name1</h3>'+
-                  '<p class="productDescription">Dis enim malesuada risus sapien gravida nulla nisl arcu. Dis enim malesuada risus sapien gravida nulla nisl arcu.</p>'+
-                '</article>'+
-              '</a>';
+            const data = await res.json();
+            console.log(data);
+            let img = document.createElement('img');
+            img.setAttribute('src', data.imageUrl);
+            img.setAttribute('atl', 'Photographie du canapé ' + data.name);
+            document.getElementById('img').appendChild(img);
+            document.getElementById('title').innerText = data.name;
+            document.getElementById('description').innerText = data.description;
+            document.getElementById('price').innerText = data.price;
+            let colors = document.getElementById('colors');
+            for (let c of data.colors){
+                let color = document.createElement('option');
+                color.setAttribute('value', c);
+                color.innerText = c;
+                colors.appendChild(color);
             }
 
-            console.log(datas);
-            return datas;
-
         } else {
+
             console.error('Retour du serveur : ', res.status);
             alert('Erreur rencontrée : ' + res.status);
+
         } 
     }
     catch(error){
-        alert("Erreur : " + error);
-    }
-}
 
-const datas_ted = getAPI("http://localhost:3000/api/products");
-//const datas_cam = getAPI("http://localhost:3000/api/cameras");
-//const datas_fur = getAPI("http://localhost:3000/api/furniture");
+        alert("Erreur : " + error);
+
+    }
+
+}
