@@ -1,8 +1,12 @@
-var url = new URL(window.location.href);
+let str = window.location.href;
+let url = new URL(str);
 let search_params = new URLSearchParams(url.search);
+let id;
 if(search_params.has('id')) {
-    let id = search_params.get('id');
+    id = search_params.get('id');
+    console.log(id);
 } else {
+    id = null;
     alert('No product selected !');
     console.error('No product selected !');
 }
@@ -52,7 +56,9 @@ async function getProduct(api, id){
 
 document.getElementById('addToCart').addEventListener('click', function(event){
 
-    if (document.getElementById('quantity').value > 0){
+    document.getElementById('colors').removeAttribute('style');
+
+    if ((document.getElementById('quantity').value > 0) && (document.getElementById('colors').value != "")){
 
         let product = {
             id : id,
@@ -88,10 +94,18 @@ document.getElementById('addToCart').addEventListener('click', function(event){
         localStorage.setItem("panier", JSON.stringify(panier));
         console.table(panier);
 
+    } else if (document.getElementById('colors').value == ""){
+
+        document.getElementById('colors').style.border = '4px solid #FF0000';
+
     } else {
 
         localStorage.removeItem("panier");
 
     }
 
+})
+
+document.getElementById('quantity').addEventListener('change', function(e){
+    e.target.value = Math.min(100, Math.max(e.target.value, 1));
 })
