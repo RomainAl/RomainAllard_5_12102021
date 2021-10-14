@@ -17,7 +17,7 @@ async function getAPI(api_link){
                 cards_api.appendChild(card);
                 card.innerHTML = 
                 '<article>'+
-                  '<img src="' + data.imageUrl + '" alt="Produit : ' + data.name + '">'+
+                  '<img src="' + data.imageUrl + '" alt="' + data.altTxt + '">'+
                   '<h3 class="productName">'+ data.name +'</h3>'+
                   '<p class="productDescription">'+ data.description +'</p>'+
                 '</article>';

@@ -1,14 +1,11 @@
-let url = window.location.href;
-let search_params = new URLSearchParams(url);
-let id;
+var url = new URL(window.location.href);
+let search_params = new URLSearchParams(url.search);
 if(search_params.has('id')) {
-    id = search_params.get('id');
-    console.log(id);
-} else{
-    id = null;
-    console.log("null");
+    let id = search_params.get('id');
+} else {
+    alert('No product selected !');
+    console.error('No product selected !');
 }
-id = "107fb5b75607497b96722bda5b504926";
 
 getProduct(localStorage.getItem('api'), id);
 
@@ -25,7 +22,7 @@ async function getProduct(api, id){
             let img = document.createElement('img');
             img.setAttribute('id', 'image');
             img.setAttribute('src', data.imageUrl);
-            img.setAttribute('alt', 'Photographie du canapé ' + data.name);
+            img.setAttribute('alt', data.altTxt);
             document.getElementById('img').appendChild(img);
             document.getElementById('title').innerText = data.name;
             document.getElementById('description').innerText = data.description;

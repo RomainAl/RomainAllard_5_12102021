@@ -2,8 +2,11 @@ let panier = JSON.parse(localStorage.getItem("panier"));
 
 if (panier){
     getPanier(panier);
-    console.table(panier);
 }
+
+document
+    .getElementById("form")
+    .addEventListener("submit", send);
 
 async function getPanier(panier){
     let cart__items = document.getElementById('cart__items');
@@ -41,6 +44,7 @@ async function getPanier(panier){
     }
     updateEventListeners();
     calculations();
+    console.table(panier);
 }
 
 function updateEventListeners(){
@@ -56,7 +60,7 @@ function updateEventListeners(){
         })
 
         quantity[i].addEventListener('change', function(e){
-            panier[e.target.closest('article').dataset.id].quantity = parseInt(e.target.value);
+            panier[e.target.closest('article').dataset.id].quantity = Math.max(Math.min(parseInt(e.target.value),100), 1);
             localStorage.setItem("panier", JSON.stringify(panier));
             getPanier(panier);
         })
@@ -74,3 +78,42 @@ function calculations(){
     document.getElementById('totalQuantity').innerText = totalQuantity;
     document.getElementById('totalPrice').innerText = totalPrice;
 }
+
+async function send(e) {
+    e.preventDefault();
+    try{
+        const res = await fetch(localStorage.getItem('api')+'/order', {
+
+            method: "POST",
+            headers: {
+                'Accept': 'application/json', 
+                'Content-Type': 'application/json'
+            },
+
+            body: JSON.stringify({
+                firstName: document.getElementById("firstName").textContent,
+                lastName: document.getElementById("lastName").textContent,
+                address: document.getElementById("address").textContent,
+                city: document.getElementById("city").textContent,
+                //ordered_products: localStorage.getItem('ordered_products'),
+            })
+
+        })
+
+        if (res.ok) {
+            
+            const datas = await res.json();
+            window.location.href='./confirmation.html?orderId=' + datas.orderId;
+            document.getElementById('orderId').textContent = datas.orderId;
+            console.log(datas.orderId);
+
+        }
+    }
+    catch(error){
+
+        alert("Erreur : " + error);
+
+    }
+  }
+  
+  
