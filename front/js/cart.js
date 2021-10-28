@@ -5,11 +5,13 @@ let url = new URL(str);
 let search_params = new URLSearchParams(url.search);
 
 if(search_params.has('orderId')) {
-
+    
+    // PAGE CONFIRMATION :
     document.getElementById('orderId').textContent = search_params.get('orderId');
 
 } else {
 
+    // PAGE PANIER :
     if (panier){
         getPanier(panier);
     }
@@ -18,6 +20,7 @@ if(search_params.has('orderId')) {
         .getElementById("form")
         .addEventListener("submit", send);
 
+    // Chargement des produits du panier :
     async function getPanier(panier){
         let cart__items = document.getElementById('cart__items');
         while (cart__items.firstChild) {
@@ -52,11 +55,15 @@ if(search_params.has('orderId')) {
                 '</div>'
             cart__items.appendChild(cart__item);
         }
+
+        // Mis à jour des "listeners" à chaque fois qu'on charge les produits :
         updateEventListeners();
+
+        // Recalcule à chaque changement :
         calculations();
-        console.table(panier);
     }
 
+    // Fonction qui ajoute les listeners aux boutons :
     function updateEventListeners(){
         let suppr_btn = document.getElementsByClassName('deleteItem');
         let quantity = document.getElementsByClassName('itemQuantity');
@@ -78,6 +85,7 @@ if(search_params.has('orderId')) {
         }
     }
 
+    // Fonction qui calcule les informations du panier :
     function calculations(){
         let totalPrice = 0;
         let totalQuantity = 0;
@@ -89,6 +97,7 @@ if(search_params.has('orderId')) {
         document.getElementById('totalPrice').innerText = totalPrice;
     }
 
+    // Fonction qui envoie les informations du formulaire au serveur après avoir vérifiée les informations :
     async function send(e) {
         e.preventDefault();
         try{
@@ -119,7 +128,6 @@ if(search_params.has('orderId')) {
             if (res.ok) {
                 
                 const datas = await res.json();
-                console.table(datas);
                 window.location.href='./confirmation.html?orderId=' + datas.orderId;
                 localStorage.removeItem("panier");
 
@@ -132,6 +140,7 @@ if(search_params.has('orderId')) {
         }
     }
 
+    // Check les informations du formulaire :
     let iname = ["firstName", "lastName", "city"];
     for (let i of iname){
         document
@@ -147,7 +156,8 @@ if(search_params.has('orderId')) {
         });
     }
 }
-  
+
+// Désactive le bouton "submit" si les informations sont pas bonnes :
 function disableSubmit(disabled) {
     if (disabled) {
         document

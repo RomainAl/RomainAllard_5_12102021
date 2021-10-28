@@ -9,7 +9,6 @@ async function getAPI(api_link){
         if (res.ok) {
             
             const datas = await res.json();
-            console.log(datas);
             let cards_api = document.getElementById('items');
             for (let data of datas){
                 let card = document.createElement("a");

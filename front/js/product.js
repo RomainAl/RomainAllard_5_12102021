@@ -1,3 +1,4 @@
+// Chargement de l'ID du produit dans l'URL :
 let str = window.location.href;
 let url = new URL(str);
 let search_params = new URLSearchParams(url.search);
@@ -12,6 +13,7 @@ if(search_params.has('id')) {
 
 getProduct(localStorage.getItem('api'), id);
 
+// Cette fonction va chercher les données de l'API :
 async function getProduct(api, id){
 
     try{
@@ -52,6 +54,7 @@ async function getProduct(api, id){
 
 }
 
+// Chargement des éléments des produits dans le localstorage :
 document.getElementById('addToCart').addEventListener('click', function(event){
 
     document.getElementById('colors').removeAttribute('style');
@@ -92,13 +95,14 @@ document.getElementById('addToCart').addEventListener('click', function(event){
         localStorage.setItem("panier", JSON.stringify(panier));
 
     } else if (document.getElementById('colors').value == ""){
-
+        
         document.getElementById('colors').style.border = '4px solid #FF0000';
 
     }
 
 })
 
+// Clamp 'quantity' entre 1 et 100 :
 document.getElementById('quantity').addEventListener('change', function(e){
     e.target.value = Math.min(100, Math.max(e.target.value, 1));
 })
