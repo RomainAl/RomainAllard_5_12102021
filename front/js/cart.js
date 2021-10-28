@@ -91,7 +91,6 @@ if(search_params.has('orderId')) {
 
     async function send(e) {
         e.preventDefault();
-        console.log("bite");
         try{
             const res = await fetch(localStorage.getItem('api')+'/order', {
 
@@ -122,7 +121,7 @@ if(search_params.has('orderId')) {
                 const datas = await res.json();
                 console.table(datas);
                 window.location.href='./confirmation.html?orderId=' + datas.orderId;
-                console.log(datas.orderId);
+                localStorage.removeItem("panier");
 
             }
         }

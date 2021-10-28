@@ -4,7 +4,6 @@ let search_params = new URLSearchParams(url.search);
 let id;
 if(search_params.has('id')) {
     id = search_params.get('id');
-    console.log(id);
 } else {
     id = null;
     alert('No product selected !');
@@ -22,7 +21,6 @@ async function getProduct(api, id){
         if (res.ok) {
             
             const data = await res.json();
-            console.log(data);
             let img = document.createElement('img');
             img.setAttribute('id', 'image');
             img.setAttribute('src', data.imageUrl);
@@ -92,15 +90,10 @@ document.getElementById('addToCart').addEventListener('click', function(event){
         }
         
         localStorage.setItem("panier", JSON.stringify(panier));
-        console.table(panier);
 
     } else if (document.getElementById('colors').value == ""){
 
         document.getElementById('colors').style.border = '4px solid #FF0000';
-
-    } else {
-
-        localStorage.removeItem("panier");
 
     }
 
